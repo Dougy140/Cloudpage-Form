@@ -1,0 +1,97 @@
+
+%%[
+    var @gender
+    if RequestParameter("gender") == "male" then
+        set @gender = "Male"
+    elseif RequestParameter("gender") == "female" then
+        set @gender = "Female"
+    else
+        set @gender = "Other"
+    endif
+InsertDE(
+    "cloudpage_form_DE",
+    "firstName",RequestParameter("firstname"),
+     "lastName",RequestParameter("lastname"),
+     "Email",RequestParameter("email"),
+     "Gender",@gender,
+     "DOB", RequestParameter("birth"),
+     "Interest",RequestParameter("interest")
+     )
+]%%
+
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <title>Registration Page</title>
+ <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+
+
+
+ <div class="container">
+  <div class="row col-md-6 col-md-offset-3">
+   <div id="submit-message" class="text-center" style="display:none;">
+    <h1><i class="glyphicon glyphicon-ok"></i></h1>
+    <h2>Submitted!</h2>
+    </div>
+  <div class="panel panel-primary">
+  <div class="panel-heading text-center"><h1>Registration Form</h1></div>
+  
+  <div class="panel-body">
+   <form action="%%=RequestParameter('PAGEURL')=%%" method="post" id="myForm">
+    <div class="form-group">
+     <label for="firstName">First Name</label>
+     <input type="text" name="firstName" class="form-control" id="firstName">
+    </div>
+    <div class="form-group">
+     <label for="lastName">Last Name</label>
+     <input type="text" name="lastName" class="form-control" id="lastName">
+    </div>
+    <div class="form-group">
+     <label for="email">Email</label>
+     <input type="text" name="email" class="form-control" id="email">
+    </div>
+     <div class="form-group">
+     <label>Gender</label>
+     <div>     
+       <label for="male" class="radio-inline"><input type="radio" name="gender" id="male" value="male">Male</label>
+       <label for="female" class="radio-inline"><input type="radio" name="gender" id="female" value="female">Female</label>
+       <label for="other" class="radio-inline"><input type="radio" name="gender" id="other" value="other">Other</label>
+     </div>
+    </div>
+    
+    <div class="form-group">
+      <label class="control-label">D.O.B</label>
+      <input type="date" class="form-control" id="date" name="dob">
+    </div>
+    <div class="form-group">
+      <label class="control-label">Interest</label>
+      <input type="text"  class="form-control" placeholder="" id="interest" name="Interest">
+    </div>
+    <div class="text-center">
+        <input type="submit" id="mySubmission" class="btn  btn-primary" onclick="submitForm();" value="Submit">
+    </div>
+   </form>
+  </div>
+  <div class="panel-footer text-center">
+   <small>&copy: Merkle Dach</small>
+  </div>
+  </div>
+  </div>
+ </div>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script>
+  function submitForm() {
+    document.getElementById("myForm").style.display = "none";
+    document.getElementById("submit-message").style.display = "block";
+    document.cookie = "formSubmitted=true";
+  }
+
+  window.onload = function() {
+    var submitted = document.cookie.match(/formSubmitted=(\w+)/);
+    if (submitted && submitted[1] === "true") {
+      document.getElementById("myPanel").style.display = "none";
+      document.getElementById("submit-message").style.display = "block";
+    }
+  };
+</script>
